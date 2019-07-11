@@ -1,98 +1,108 @@
 using System;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GameEngine.Tests
 {
-    public class PlayerCharacterShould
+    public class PlayerCharacterShould : IDisposable
     {
+        private readonly PlayerCharacter _sut;
+        private readonly ITestOutputHelper testOutput;
+
+        public PlayerCharacterShould(ITestOutputHelper testOutput)
+        {
+            this.testOutput = testOutput;
+            testOutput.WriteLine("Creating new player character");
+            _sut = new PlayerCharacter();
+        }
+
         [Fact]
         public void BeInexperiencedWhenNew()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Assert
-            Assert.True(sut.IsNoob);
+            Assert.True(_sut.IsNoob);
         }
 
         [Fact]
         public void CalculateFullName()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
-            sut.FirstName = "Sarah";
-            sut.LastName = "Smith";
+            ;
+            _sut.FirstName = "Sarah";
+            _sut.LastName = "Smith";
             var expected = "Sarah Smith";
 
             //Act
 
 
             //Assert
-            Assert.Equal(expected, sut.FullName);
+            Assert.Equal(expected, _sut.FullName);
         }
 
         [Fact]
         public void HaveFullNameStatingWithFirstName()
         {
-            //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
-            sut.FirstName = "Sarah";
-            sut.LastName = "Smith";
+            //Arrange            
+            _sut.FirstName = "Sarah";
+            _sut.LastName = "Smith";
             var expected = "Sarah";
 
             //Act
 
 
             //Assert
-            Assert.StartsWith(expected, sut.FullName);
+            Assert.StartsWith(expected, _sut.FullName);
         }
 
         [Fact]
         public void HaveFullNameEndingWithLastName()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
-            sut.FirstName = "Sarah";
-            sut.LastName = "Smith";
+
+            _sut.FirstName = "Sarah";
+            _sut.LastName = "Smith";
             var expected = "Smith";
 
             //Act
 
 
             //Assert
-            Assert.EndsWith(expected, sut.FullName);
+            Assert.EndsWith(expected, _sut.FullName);
         }
 
         [Fact]
         public void CalculateFullName_IgnoreCase()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
-            sut.FirstName = "SARAH";
-            sut.LastName = "SMITH";
+
+            _sut.FirstName = "SARAH";
+            _sut.LastName = "SMITH";
             var expected = "Sarah Smith";
 
             //Act
 
 
             //Assert
-            Assert.Equal(expected, sut.FullName, ignoreCase: true);
+            Assert.Equal(expected, _sut.FullName, ignoreCase: true);
         }
 
         [Fact]
         public void CalculateFullName_SubStringAssert()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
-            sut.FirstName = "Sarah";
-            sut.LastName = "Smith";
+
+            _sut.FirstName = "Sarah";
+            _sut.LastName = "Smith";
             var substring = "ah Sm";
 
             //Act
 
 
             //Assert
-            Assert.Contains(substring, sut.FullName);
+            Assert.Contains(substring, _sut.FullName);
         }
 
 
@@ -100,70 +110,70 @@ namespace GameEngine.Tests
         public void CalculateFullNameWithTitleCase()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
-            sut.FirstName = "Sarah";
-            sut.LastName = "Smith";
+
+            _sut.FirstName = "Sarah";
+            _sut.LastName = "Smith";
             var regExPattern = "[A-Z]{1}[a-z]+ [A-Z]{1}[a-z]+";
 
             //Act
 
 
             //Assert
-            Assert.Matches(regExPattern, sut.FullName);
+            Assert.Matches(regExPattern, _sut.FullName);
         }
 
         [Fact]
         public void StartWithDefaultHealth()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
             int expected = 100;
 
             //Act
 
 
             //Assert
-            Assert.Equal(expected, sut.Health);
+            Assert.Equal(expected, _sut.Health);
         }
 
         [Fact]
         public void StartWithDefaultHealth_NotEqualExample()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Act
 
 
             //Assert
-            Assert.NotEqual(0, sut.Health);
+            Assert.NotEqual(0, _sut.Health);
         }
 
         [Fact]
         public void IncreaseHealthAfterSleeping()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Act
-            sut.Sleep();
+            _sut.Sleep();
 
             //Assert
             //Assert.True(sut.Health >= 101 && sut.Health <= 201); 
             //better way bellow
-            Assert.InRange(sut.Health, 101, 201);
+            Assert.InRange(_sut.Health, 101, 201);
         }
 
         [Fact]
         public void NotHaveNickNameByDefault()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Act
 
             //Assert            
-            Assert.Null(sut.Nickname);
+            Assert.Null(_sut.Nickname);
         }
 
 
@@ -171,12 +181,12 @@ namespace GameEngine.Tests
         public void ContainALongBow()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Act
 
             //Assert            
-            Assert.Contains("Long Bow", sut.Weapons);
+            Assert.Contains("Long Bow", _sut.Weapons);
         }
 
 
@@ -184,24 +194,24 @@ namespace GameEngine.Tests
         public void NotContainABazuka()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Act
 
             //Assert            
-            Assert.DoesNotContain("Bazuka", sut.Weapons);
+            Assert.DoesNotContain("Bazuka", _sut.Weapons);
         }
 
         [Fact]
         public void HaveAtLeastOneKindOfSword()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Act
 
             //Assert            
-            Assert.Contains(sut.Weapons, w => w.Contains("sword", StringComparison.CurrentCultureIgnoreCase));
+            Assert.Contains(_sut.Weapons, w => w.Contains("sword", StringComparison.CurrentCultureIgnoreCase));
         }
 
 
@@ -209,7 +219,7 @@ namespace GameEngine.Tests
         public void HaveAllExpectedWeapons()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
             var expectedWeapons = new string[]
             {
                 "Long Bow",
@@ -220,19 +230,19 @@ namespace GameEngine.Tests
             //Act
 
             //Assert            
-            Assert.Equal(expectedWeapons, sut.Weapons);
+            Assert.Equal(expectedWeapons, _sut.Weapons);
         }
 
         [Fact]
         public void HaveNoEmptyDefaultWeapons()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Act
 
             //Assert            
-            Assert.All(sut.Weapons, w => Assert.False(string.IsNullOrWhiteSpace(w)));
+            Assert.All(_sut.Weapons, w => Assert.False(string.IsNullOrWhiteSpace(w)));
         }
 
 
@@ -240,28 +250,149 @@ namespace GameEngine.Tests
         public void RaiseSleptEvent()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Act
 
             //Assert            
             Assert.Raises<EventArgs>(
-                handler => sut.PlayerSlept += handler,
-                handler => sut.PlayerSlept -= handler,
-                () => sut.Sleep());
+                handler => _sut.PlayerSlept += handler,
+                handler => _sut.PlayerSlept -= handler,
+                () => _sut.Sleep());
         }
 
         [Fact]
         public void RaisePropertyChangedEvent()
         {
             //Arrange
-            PlayerCharacter sut = new PlayerCharacter();
+
 
             //Act
 
             //Assert            
-            Assert.PropertyChanged(sut, "Health", () => sut.TakeDamage(12));
+            Assert.PropertyChanged(_sut, "Health", () => _sut.TakeDamage(12));
         }
 
+        //[Fact]
+        //public void TakeZeroDemage()
+        //{
+        //    //Arrange
+
+
+        //    //Act
+        //    _sut.TakeDamage(0);
+
+        //    //Assert            
+        //    Assert.Equal(100, _sut.Health);
+        //}
+
+        //[Fact]
+        //public void TakeSmallDemage()
+        //{
+        //    //Arrange
+
+
+        //    //Act
+        //    _sut.TakeDamage(1);
+
+        //    //Assert            
+        //    Assert.Equal(99, _sut.Health);
+        //}
+
+
+        //[Fact]
+        //public void TakeMediumDemage()
+        //{
+        //    //Arrange
+
+
+        //    //Act
+        //    _sut.TakeDamage(50);
+
+        //    //Assert            
+        //    Assert.Equal(50, _sut.Health);
+        //}
+
+        //[Fact]
+        //public void HaveMinimumOneHealth()
+        //{
+        //    //Arrange
+
+
+        //    //Act
+        //    _sut.TakeDamage(101);
+
+        //    //Assert            
+        //    Assert.Equal(1, _sut.Health);
+        //}
+
+        //data driven test [Theory] atributas
+
+        [Theory]
+        [InlineData(0,100)]
+        [InlineData(1,99)]
+        [InlineData(50,50)]
+        [InlineData(101,1)]
+        public void TakeDamage(int damage, int expectedHealth)
+        {
+            //Arrange
+
+            //Act
+            _sut.TakeDamage(damage);
+
+            //Assert            
+            Assert.Equal(expectedHealth, _sut.Health);
+        }
+
+
+        [Theory]
+        [MemberData(nameof(InternalHealthDamageTestData.TestData), MemberType = typeof(InternalHealthDamageTestData))]
+        public void TakeDamage2(int damage, int expectedHealth)
+        {
+            //Arrange
+
+            //Act
+            _sut.TakeDamage(damage);
+
+            //Assert            
+            Assert.Equal(expectedHealth, _sut.Health);
+        }
+
+        [Theory]
+        [MemberData(nameof(ExternalHealthDamageTestData.TestData), 
+            MemberType = typeof(ExternalHealthDamageTestData))]
+        public void TakeDamage3(int damage, int expectedHealth)
+        {
+            //Arrange
+
+            //Act
+            _sut.TakeDamage(damage);
+
+            //Assert            
+            Assert.Equal(expectedHealth, _sut.Health);
+        }
+
+        [Theory]
+        [HealthDamageData] //custom attribute
+        public void TakeDamage4(int damage, int expectedHealth)
+        {
+            //Arrange
+
+            //Act
+            _sut.TakeDamage(damage);
+
+            //Assert            
+            Assert.Equal(expectedHealth, _sut.Health);
+        }
+
+
+
+
+
+        public void Dispose()
+        {
+            testOutput.WriteLine($"Disposing PlayerCharacter {_sut.FullName}");
+            //_sut.Dispose();
+        }
     }
 }

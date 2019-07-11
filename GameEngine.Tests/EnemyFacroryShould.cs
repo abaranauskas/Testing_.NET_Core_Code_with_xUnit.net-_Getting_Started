@@ -7,9 +7,10 @@ using Xunit;
 
 namespace GameEngine.Tests
 {
+    [Trait("Category", "Enemy")]
     public class EnemyFacroryShould
     {
-        [Fact]
+        [Fact]        
         public void CreateNormalEnemyByDefault()
         {
             //Arrange
@@ -22,7 +23,7 @@ namespace GameEngine.Tests
             Assert.IsType<NormalEnemy>(expectedEnemy);
         }
 
-        [Fact]
+        [Fact(Skip ="Dont need torun this!")]
         public void NotCreateBossEnemyByDefault()
         {
             //Arrange
